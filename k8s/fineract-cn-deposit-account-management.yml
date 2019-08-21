@@ -1,0 +1,58 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: fineract-cn-deposit-account-management
+spec:
+  selector:
+    app: fineract-cn-deposit-account-management
+  ports:
+    - name: http
+      protocol: TCP
+      port: 2027
+      targetPort: httpport
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fineract-cn-deposit-account-management
+  labels:
+    app: fineract-cn-deposit-account-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fineract-cn-deposit-account-management
+  template:
+    metadata:
+      labels:
+        app: fineract-cn-deposit-account-management
+    spec:
+      containers:
+        - name: fineract-cn-deposit-account-management
+          image: registry.dev.redbee.io/fineract-cn-deposit-account-management:latest
+          imagePullPolicy: Always
+          env:
+            - name: "server.port"
+              value: "2027"
+            - name: "server.max-http-header-size"
+              value: "16384"
+            - name: "spring.cloud.config.uri"
+              value: "http://fineract-cn-cloud-config-server:8888"
+            - name: "spring.cloud.config.profile"
+              value: "default"
+          ports:
+            - name: httpport
+              containerPort: 2027
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 0.1
+            limits:
+              memory: 2Gi
+              cpu: 1
+      imagePullSecrets:
+        - name: docker.redbee
+
+---
