@@ -117,6 +117,9 @@ public class ProductDefinitionRestController {
   )
   @ResponseBody
   ResponseEntity<ProductDefinition> findProductDefinition(@PathVariable("identifier") final String identifier) {
+
+    logger.info("Find product definition "+identifier);
+
     return ResponseEntity.ok(
         this.productDefinitionService.findProductDefinition(identifier)
             .orElseThrow(() -> ServiceException.notFound("Product definition {0} not found.", identifier))
