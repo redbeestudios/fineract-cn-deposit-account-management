@@ -18,6 +18,7 @@
  */
 package org.apache.fineract.cn.deposit.service.internal.command.handler;
 
+import org.apache.fineract.cn.command.annotation.NotificationFlag;
 import org.apache.fineract.cn.deposit.api.v1.EventConstants;
 import org.apache.fineract.cn.deposit.api.v1.instance.domain.ProductInstance;
 import org.apache.fineract.cn.deposit.service.ServiceConstants;
@@ -72,7 +73,7 @@ public class ProductInstanceAggregate {
   }
 
   @CommandHandler
-  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.POST_PRODUCT_INSTANCE)
+  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.POST_PRODUCT_INSTANCE, selectorKafaEvent = NotificationFlag.NOTIFY)
   @Transactional
   public String createProductInstance(final CreateProductInstanceCommand createProductInstanceCommand) {
     final ProductInstance productInstance = createProductInstanceCommand.productInstance();
@@ -112,7 +113,7 @@ public class ProductInstanceAggregate {
 
   @Transactional
   @CommandHandler
-  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.ACTIVATE_PRODUCT_INSTANCE)
+  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.ACTIVATE_PRODUCT_INSTANCE, selectorKafaEvent = NotificationFlag.NOTIFY)
   public String process(final ActivateProductInstanceCommand activateProductInstanceCommand) {
     final String accountIdentifier = activateProductInstanceCommand.identifier();
     final Optional<ProductInstanceEntity> optionalProductInstance =
@@ -138,7 +139,7 @@ public class ProductInstanceAggregate {
 
   @Transactional
   @CommandHandler
-  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.CLOSE_PRODUCT_INSTANCE)
+  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.CLOSE_PRODUCT_INSTANCE, selectorKafaEvent = NotificationFlag.NOTIFY)
   public String process(final CloseProductInstanceCommand closeProductInstanceCommand) {
     final String accountIdentifier = closeProductInstanceCommand.identifier();
     final Optional<ProductInstanceEntity> optionalProductInstance =
@@ -161,7 +162,7 @@ public class ProductInstanceAggregate {
 
   @Transactional
   @CommandHandler
-  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.PUT_PRODUCT_INSTANCE)
+  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.PUT_PRODUCT_INSTANCE, selectorKafaEvent = NotificationFlag.NOTIFY)
   public String process(final UpdateProductInstanceCommand updateProductInstanceCommand) {
     final ProductInstance productInstance = updateProductInstanceCommand.productInstance();
     final Optional<ProductInstanceEntity> optionalProductInstance =
@@ -192,7 +193,7 @@ public class ProductInstanceAggregate {
 
   @Transactional
   @CommandHandler
-  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.PUT_PRODUCT_INSTANCE)
+  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME, selectorValue = EventConstants.PUT_PRODUCT_INSTANCE, selectorKafaEvent = NotificationFlag.NOTIFY)
   public String process(final TransactionProcessedCommand transactionProcessedCommand) {
     final Optional<ProductInstanceEntity> optionalProductInstance =
         this.productInstanceRepository.findByAccountIdentifier(transactionProcessedCommand.accountIdentifier());
