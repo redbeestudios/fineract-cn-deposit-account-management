@@ -58,13 +58,23 @@ dependencies {
             [group: 'org.apache.fineract.cn', name: 'async', version: versions.frameworkasync],
             [group: 'org.apache.fineract.cn', name: 'cassandra', version: versions.frameworkcassandra],
             [group: 'org.apache.fineract.cn', name: 'mariadb', version: versions.frameworkmariadb],
-            [group: 'org.apache.fineract.cn', name: 'command', version: versions.frameworkcommand],
             [group: 'org.apache.fineract.cn.accounting', name: 'api', version: versions.frameworkledger],
             [group: 'org.apache.fineract.cn.rhythm', name: 'spi', version: versions.frameworkrhythm],
             [group: 'org.apache.fineract.cn.rhythm', name: 'api', version: versions.frameworkrhythm],
             [group: 'org.hibernate', name: 'hibernate-validator', version: versions.validator],
             [group: 'org.threeten', name: 'threeten-extra', version: '1.2']
     )
+
+    // redbee added - compatibility with kafka client in command jar new version
+    compile ('org.apache.kafka:kafka-clients:0.11.0.2') {
+        force true
+    }
+
+    compile ('org.springframework:spring-messaging:4.3.3.RELEASE') {
+        exclude group: 'org.apache.kafka', module: 'kafka-clients'
+    }
+
+    compile (group: 'org.apache.fineract.cn', name: 'command', version: versions.frameworkcommand)
 }
 
 publishToMavenLocal.dependsOn bootRepackage
