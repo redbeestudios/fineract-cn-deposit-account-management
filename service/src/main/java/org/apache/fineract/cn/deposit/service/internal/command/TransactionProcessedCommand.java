@@ -18,6 +18,9 @@
  */
 package org.apache.fineract.cn.deposit.service.internal.command;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TransactionProcessedCommand {
 
   private final String accountIdentifier;
@@ -29,5 +32,9 @@ public class TransactionProcessedCommand {
 
   public String accountIdentifier() {
     return this.accountIdentifier;
+  }
+
+  public String getAccountIdentifier() {
+    return accountIdentifier;
   }
 }

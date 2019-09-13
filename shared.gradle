@@ -24,7 +24,7 @@ ext.versions = [
         frameworkasync    : '0.1.0-BUILD-SNAPSHOT',
         frameworkcassandra: '0.1.0-BUILD-SNAPSHOT',
         frameworkmariadb  : '0.1.0-BUILD-SNAPSHOT',
-        frameworkcommand  : '0.1.0-BUILD-SNAPSHOT',
+        frameworkcommand  : '0.1.2-BUILD-SNAPSHOT',
         frameworktest     : '0.1.0-BUILD-SNAPSHOT',
         frameworkanubis   : '0.1.0-BUILD-SNAPSHOT',
         frameworkledger   : '0.1.0-BUILD-SNAPSHOT',
@@ -46,7 +46,17 @@ tasks.withType(JavaCompile) {
 repositories {
     jcenter()
     mavenLocal()
-    maven { url 'https://mifos.jfrog.io/mifos/libs-snapshot/' }
+//    maven { url 'https://mifos.jfrog.io/mifos/libs-snapshot/' }
+
+    maven {
+        def repo = version.endsWith('SNAPSHOT') ? 'waas-snapshot' : 'waas'
+        url "http://registry-nd.dev.redbee.io/repository/${repo}"
+
+        credentials {
+            username = String.valueOf(System.getenv("NEXUS_USER"))
+            password = String.valueOf(System.getenv("NEXUS_PASS"))
+        }
+    }
 }
 
 dependencyManagement {
