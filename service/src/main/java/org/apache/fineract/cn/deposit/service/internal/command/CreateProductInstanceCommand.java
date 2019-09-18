@@ -18,10 +18,14 @@
  */
 package org.apache.fineract.cn.deposit.service.internal.command;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.fineract.cn.deposit.api.v1.instance.domain.ProductInstance;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CreateProductInstanceCommand {
 
+  @JsonProperty("command")
   private final ProductInstance productInstance;
 
   public CreateProductInstanceCommand(final ProductInstance productInstance) {
