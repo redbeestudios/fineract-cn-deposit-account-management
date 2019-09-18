@@ -58,7 +58,6 @@ dependencies {
             [group: 'org.apache.fineract.cn', name: 'async', version: versions.frameworkasync],
             [group: 'org.apache.fineract.cn', name: 'cassandra', version: versions.frameworkcassandra],
             [group: 'org.apache.fineract.cn', name: 'mariadb', version: versions.frameworkmariadb],
-            [group: 'org.apache.fineract.cn', name: 'command', version: versions.frameworkcommand],
             [group: 'org.apache.fineract.cn.accounting', name: 'api', version: versions.frameworkledger],
             [group: 'org.apache.fineract.cn.rhythm', name: 'spi', version: versions.frameworkrhythm],
             [group: 'org.apache.fineract.cn.rhythm', name: 'api', version: versions.frameworkrhythm],
@@ -67,6 +66,17 @@ dependencies {
             [group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'],
             [group: 'ch.qos.logback', name: 'logback-core', version: '1.1.8']
     )
+
+    // redbee added - compatibility with kafka client in command jar new version
+    compile ('org.apache.kafka:kafka-clients:0.11.0.2') {
+        force true
+    }
+
+    compile ('org.springframework:spring-messaging:4.3.3.RELEASE') {
+        exclude group: 'org.apache.kafka', module: 'kafka-clients'
+    }
+
+    compile (group: 'org.apache.fineract.cn', name: 'command', version: versions.frameworkcommand)
 }
 
 publishToMavenLocal.dependsOn bootRepackage
@@ -79,12 +89,17 @@ publishing {
             artifactId project.name
             version project.findProperty('externalVersion') ?: project.version
         }
-        bootService(MavenPublication) {
-            // "boot" jar
-            artifact("$buildDir/libs/$project.name-$version-boot.jar")
-            groupId project.group
-            artifactId("$project.name-boot")
-            version project.findProperty('externalVersion') ?: project.version
+    }
+    repositories {
+        maven {
+            def repo = version.endsWith('SNAPSHOT') ? 'waas-snapshot' : 'waas'
+            url "http://registry-nd.dev.redbee.io/repository/${repo}"
+
+            credentials {
+                username = String.valueOf(System.getenv("NEXUS_USER"))
+                password = String.valueOf(System.getenv("NEXUS_PASS"))
+            }
+
         }
     }
 }

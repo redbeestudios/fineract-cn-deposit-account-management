@@ -18,6 +18,9 @@
  */
 package org.apache.fineract.cn.deposit.service.internal.command;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class CloseProductInstanceCommand {
   private final String identifier;
 
@@ -28,5 +31,9 @@ public class CloseProductInstanceCommand {
 
   public String identifier() {
     return this.identifier;
+  }
+
+  public String getIdentifier() {
+    return identifier;
   }
 }
