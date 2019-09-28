@@ -59,8 +59,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
     "org.apache.fineract.cn.deposit.service.internal.service",
     "org.apache.fineract.cn.deposit.service.internal.repository",
     "org.apache.fineract.cn.deposit.service.internal.command.handler",
-    "org.apache.fineract.cn.command"
-
 })
 @EnableJpaRepositories({
     "org.apache.fineract.cn.deposit.service.internal.repository"
