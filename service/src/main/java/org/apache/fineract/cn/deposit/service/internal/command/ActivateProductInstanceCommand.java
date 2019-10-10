@@ -22,12 +22,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ActivateProductInstanceCommand {
-  private final String identifier;
+  private String identifier;
 
   public ActivateProductInstanceCommand(final String identifier) {
     super();
     this.identifier = identifier;
   }
+
+  public ActivateProductInstanceCommand() {}
 
   public String identifier() {
     return this.identifier;
