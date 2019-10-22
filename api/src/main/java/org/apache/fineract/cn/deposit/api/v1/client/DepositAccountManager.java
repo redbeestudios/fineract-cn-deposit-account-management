@@ -127,6 +127,9 @@ public interface DepositAccountManager {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
   )
+  @ThrowsExceptions(
+          @ThrowsException(status = HttpStatus.BAD_REQUEST, exception = ProductInstanceValidationException.class)
+  )
   void create(@RequestBody @Valid final ProductInstance productInstance);
 
   @RequestMapping(
@@ -153,6 +156,9 @@ public interface DepositAccountManager {
       method = RequestMethod.POST,
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
+  )
+  @ThrowsExceptions(
+          @ThrowsException(status = HttpStatus.BAD_REQUEST, exception = ProductInstanceNotFoundException.class)
   )
   void postProductInstanceCommand(@PathVariable("identifier") final String identifier,
                                   @RequestParam(value = "command", required = true) final String command);

@@ -18,5 +18,11 @@
  */
 package org.apache.fineract.cn.deposit.api.v1.instance;
 
-public class ProductInstanceNotFoundException extends RuntimeException {
+import feign.Response;
+import org.apache.fineract.cn.api.client.FineractException;
+
+public class ProductInstanceNotFoundException extends FineractException {
+    public ProductInstanceNotFoundException(Response response) {
+        super(response);
+    }
 }
