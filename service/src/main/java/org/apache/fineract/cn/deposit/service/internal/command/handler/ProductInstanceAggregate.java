@@ -88,16 +88,12 @@ public class ProductInstanceAggregate {
 
     optionalProductDefinition.ifPresent(productDefinitionEntity -> {
 
-      final List<ProductInstanceEntity> currentProductInstances =
-          this.productInstanceRepository.findByCustomerIdentifier(productInstance.getCustomerIdentifier());
-
-      final int accountSuffix = currentProductInstances.size() + 1;
-      final String accountNumber =
-          productInstance.getCustomerIdentifier() +
-              "." + productDefinitionEntity.getEquityLedgerIdentifier() +
-              "." + String.format("%05d", accountSuffix);
-
-      productInstanceEntity.setAccountIdentifier(accountNumber);
+      String accountNumber;
+      if(Optional.ofNullable(productInstance.getAccountIdentifier()).isPresent()){
+        accountNumber = productInstance.getAccountIdentifier();
+      } else {
+        accountNumber = buildAccountNumber(productInstance, productDefinitionEntity);
+      }
 
       this.accountingService.createAccount(productDefinitionEntity.getEquityLedgerIdentifier(),
           productDefinitionEntity.getName(), productInstanceEntity.getCustomerIdentifier(),
@@ -111,6 +107,19 @@ public class ProductInstanceAggregate {
 
     this.productInstanceRepository.save(productInstanceEntity);
     return productInstance.getCustomerIdentifier();
+  }
+
+  private String buildAccountNumber(ProductInstance productInstance, ProductDefinitionEntity productDefinitionEntity ) {
+    final List<ProductInstanceEntity> currentProductInstances =
+            this.productInstanceRepository.findByCustomerIdentifier(productInstance.getCustomerIdentifier());
+
+    final int accountSuffix = currentProductInstances.size() + 1;
+    final String accountNumber =
+            productInstance.getCustomerIdentifier() +
+                    "." + productDefinitionEntity.getEquityLedgerIdentifier() +
+                    "." + String.format("%05d", accountSuffix);
+
+    return accountNumber;
   }
 
   @Transactional
