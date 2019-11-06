@@ -88,12 +88,8 @@ public class ProductInstanceAggregate {
 
     optionalProductDefinition.ifPresent(productDefinitionEntity -> {
 
-      String accountNumber;
-      if(Optional.ofNullable(productInstance.getAccountIdentifier()).isPresent()){
-        accountNumber = productInstance.getAccountIdentifier();
-      } else {
-        accountNumber = buildAccountNumber(productInstance, productDefinitionEntity);
-      }
+      final String accountNumber = Optional.ofNullable(productInstance.getAccountIdentifier())
+        .orElseGet(() -> buildAccountNumber(productInstance, productDefinitionEntity));
 
       this.accountingService.createAccount(productDefinitionEntity.getEquityLedgerIdentifier(),
           productDefinitionEntity.getName(), productInstanceEntity.getCustomerIdentifier(),
