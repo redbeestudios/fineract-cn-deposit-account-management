@@ -23,11 +23,11 @@ import org.apache.fineract.cn.lang.validation.constraints.ValidIdentifier;
 
 public class ProductInstance {
 
-  @ValidIdentifier
+  @ValidIdentifier(maxLength = 350)
   private String customerIdentifier;
   @ValidIdentifier
   private String productIdentifier;
-  @ValidIdentifier(maxLength = 34, optional = true)
+  @ValidIdentifier(maxLength = 350, optional = true)
   private String accountIdentifier;
   private String alternativeAccountNumber;
   private Set<String> beneficiaries;

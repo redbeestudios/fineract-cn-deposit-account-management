@@ -25,7 +25,7 @@ public class Charge {
 
   @ValidIdentifier
   private String actionIdentifier;
-  @ValidIdentifier
+  @ValidIdentifier(maxLength = 350)
   private String incomeAccountIdentifier;
   @NotNull
   private String name;
