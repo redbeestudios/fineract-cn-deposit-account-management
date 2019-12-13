@@ -74,9 +74,12 @@ public class ProductInstanceAggregate {
   }
 
   @CommandHandler
-  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME,
-          selectorValue = EventConstants.POST_PRODUCT_INSTANCE)
   @Transactional
+  @EventEmitter(selectorName = EventConstants.SELECTOR_NAME,
+          selectorValue = EventConstants.POST_PRODUCT_INSTANCE,
+          selectorKafkaEvent = NotificationFlag.NOTIFY,
+          selectorKafkaTopic = KafkaTopicConstants.TOPIC_PRODUCT_DEPOSIT,
+          selectorKafkaTopicError = KafkaTopicConstants.TOPIC_ERROR_PRODUCT_DEPOSIT)
   public String createProductInstance(final CreateProductInstanceCommand createProductInstanceCommand) {
     final ProductInstance productInstance = createProductInstanceCommand.productInstance();
 

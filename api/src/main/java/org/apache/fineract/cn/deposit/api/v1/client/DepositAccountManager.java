@@ -127,9 +127,10 @@ public interface DepositAccountManager {
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
   )
-  @ThrowsExceptions(
-          @ThrowsException(status = HttpStatus.BAD_REQUEST, exception = ProductInstanceValidationException.class)
-  )
+  @ThrowsExceptions({
+          @ThrowsException(status = HttpStatus.BAD_REQUEST, exception = ProductInstanceValidationException.class),
+          @ThrowsException(status = HttpStatus.CONFLICT, exception = ProductDefinitionValidationException.class)
+  })
   void create(@RequestBody @Valid final ProductInstance productInstance);
 
   @RequestMapping(

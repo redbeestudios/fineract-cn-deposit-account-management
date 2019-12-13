@@ -26,10 +26,22 @@ import org.apache.fineract.cn.deposit.api.v1.instance.domain.ProductInstance;
 public class CreateProductInstanceCommand {
 
   @JsonProperty("command")
-  private final ProductInstance productInstance;
+  private ProductInstance productInstance;
 
   public CreateProductInstanceCommand(final ProductInstance productInstance) {
     super();
+    this.productInstance = productInstance;
+  }
+
+  public CreateProductInstanceCommand() {
+    super();
+  }
+
+  public ProductInstance getProductInstance() {
+    return productInstance;
+  }
+
+  public void setProductInstance(ProductInstance productInstance) {
     this.productInstance = productInstance;
   }
 

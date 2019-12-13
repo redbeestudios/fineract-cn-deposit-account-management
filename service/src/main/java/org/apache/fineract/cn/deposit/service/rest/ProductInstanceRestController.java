@@ -31,6 +31,7 @@ import org.apache.fineract.cn.deposit.service.internal.command.UpdateProductInst
 import org.apache.fineract.cn.deposit.service.internal.service.ProductInstanceService;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import javax.validation.Valid;
 import org.apache.fineract.cn.anubis.annotation.AcceptedTokenType;
@@ -77,6 +78,12 @@ public class ProductInstanceRestController {
   )
   @ResponseBody
   public ResponseEntity<Void> create(@RequestBody @Valid final ProductInstance productInstance) {
+    Optional.ofNullable(productInstance.getAccountIdentifier()).ifPresent((identifier) -> {
+      if (this.productInstanceService.findByAccountIdentifier(identifier).isPresent()) {
+        logger.error("Product instance existing {}", identifier);
+        throw ServiceException.conflict("Product instance {0} not found.", identifier);
+      }
+    });
     this.commandGateway.process(new CreateProductInstanceCommand(productInstance));
     return ResponseEntity.accepted().build();
   }
