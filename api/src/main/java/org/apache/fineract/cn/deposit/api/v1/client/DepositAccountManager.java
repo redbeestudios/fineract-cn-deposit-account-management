@@ -129,7 +129,7 @@ public interface DepositAccountManager {
   )
   @ThrowsExceptions({
           @ThrowsException(status = HttpStatus.BAD_REQUEST, exception = ProductInstanceValidationException.class),
-          @ThrowsException(status = HttpStatus.CONFLICT, exception = ProductDefinitionValidationException.class)
+          @ThrowsException(status = HttpStatus.CONFLICT, exception = ProductDefinitionAlreadyExistsException.class)
   })
   void create(@RequestBody @Valid final ProductInstance productInstance);
 
