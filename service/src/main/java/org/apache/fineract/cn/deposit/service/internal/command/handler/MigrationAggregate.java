@@ -66,6 +66,6 @@ public class MigrationAggregate {
     this.rhythmService.setBeat();
 
     this.logger.info("Migration finished.");
-    return this.applicationName.getVersionString();
+    return EventConstants.INITIALIZE;//this.applicationName.getVersionString();
   }
 }
